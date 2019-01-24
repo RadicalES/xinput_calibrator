@@ -47,8 +47,7 @@ Calibrator::Calibrator(const char* const device_name0, const XYinfo& axys0,
     output_filename(output_filename0)
 {
     old_axys = axys0;
-
-    clicked.num = 0;
+     clicked.num = 0;
     //clicked.x(NUM_POINTS);
     //clicked.y(NUM_POINTS);
 }

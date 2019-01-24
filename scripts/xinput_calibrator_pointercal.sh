@@ -11,18 +11,31 @@
 PATH="/usr/bin:$PATH"
 
 BINARY="xinput_calibrator"
-CALFILE="/etc/pointercal.xinput"
-LOGFILE="/var/log/xinput_calibrator.pointercal.log"
+SYS_CALFILE="/etc/pointercal.xinput"
+USER_CALFILE="$HOME/.pointercal/pointercal.xinput"
 
-if [ -e $CALFILE ] ; then
-  if grep replace $CALFILE ; then
-    echo "Empty calibration file found, removing it"
-    rm $CALFILE
-  else
-    echo "Using calibration data stored in $CALFILE"
-    . $CALFILE && exit 0
-  fi
+if [ "$USER" = "root" ]; then
+  LOGFILE="/var/log/xinput_calibrator.pointercal.log"
+  CALFILES="$SYS_CALFILE"
+else
+  LOGFILE="$HOME/.pointercal/xinput_calibrator.pointercal.log"
+  CALFILES="$USER_CALFILE $SYS_CALFILE"
+  mkdir -p "$HOME/.pointercal"
 fi
+
+for CALFILE in $CALFILES; do
+  if [ -e $CALFILE ]; then
+    if grep replace $CALFILE ; then
+      echo "Empty calibration file found, removing it"
+      rm $CALFILE 2>/dev/null || true
+    else
+      echo "Using calibration data stored in $CALFILE"
+      . $CALFILE && exit 0
+    fi
+  fi
+done
+
+[ "$USER" != "root" ] && CALFILE=$USER_CALFILE
 
 CALDATA=`$BINARY --output-type xinput -v | tee $LOGFILE | grep '    xinput set' | sed 's/^    //g; s/$/;/g'`
 if [ ! -z "$CALDATA" ] ; then
