@@ -27,6 +27,16 @@
 #include "calibrator.hh"
 #include <X11/extensions/XInput.h>
 
+struct MatrixInfo {
+	int width;
+	int height;
+	float a;
+	float c;
+	float e;
+	float f;
+	float m[9];
+};
+
 /***************************************
  * Class for dynamic evdev calibration
  * uses xinput "Evdev Axis Calibration"
@@ -65,10 +75,12 @@ public:
     /// calculate and apply the calibration
     virtual bool finish(int width, int height);
     virtual bool finish_data(const XYinfo &new_axys);
+    virtual bool finish_data_matrix(MatrixInfo matrixInfo);
 
     bool set_swapxy(const int swap_xy);
     bool set_invert_xy(const int invert_x, const int invert_y);
-    bool set_calibration(const XYinfo new_axys);
+    bool set_calibration(float matrix[]);
+    bool get_calibration(float matrix[]);	
 
     // xinput_ functions (from the xinput project)
     Atom xinput_parse_atom(Display *display, const char* name);
@@ -79,9 +91,11 @@ public:
                                  int argc,
                                  const int* argv);
 protected:
+    MatrixInfo cal_matrix;
     bool output_xorgconfd(const XYinfo new_axys);
     bool output_hal(const XYinfo new_axys);
     bool output_xinput(const XYinfo new_axys);
+    bool output_xinput_cal_matrix(float m[]);
 };
 
 #endif
