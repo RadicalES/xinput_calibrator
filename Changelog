@@ -1,3 +1,6 @@
+xinput_calibrator 0.7.6 [2019-01-24]
+* Add support for xinput "libinput Calibration Matrix"
+
 xinput_calibrator 0.7.5 [2010-09-12]
 Major features:
 * support multi-head setups in the GUIs (Alexey Kuznetsov)

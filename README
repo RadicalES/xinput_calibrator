@@ -1,5 +1,9 @@
 xinput calibrator: A generic touchscreen calibration program for X.Org
 
+Version: 0.7.6
+Website: http://www.freedesktop.org/wiki/Software/xinput_calibrator
+Source:  http://github.com:RadicalES/xinput_calibrator.git
+
 Version: 0.7.5
 Website: http://www.freedesktop.org/wiki/Software/xinput_calibrator
 Source:  http://github.com/tias/xinput_calibrator
