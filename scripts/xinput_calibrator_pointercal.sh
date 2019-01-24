@@ -7,6 +7,8 @@
 # original script: Martin Jansa <Martin.Jansa@gmail.com>, 2010-01-31
 # updated by Tias Guns <tias@ulyssis.org>, 2010-02-15
 # updated by Koen Kooi <koen@dominion.thruhere.net>, 2012-02-28
+# updated by Jan Zwiegers <jan@radicalsystems.co.za>, 2019-01-24
+# - Add param to specify that the pointercal.xinput file must be overwritten
 
 PATH="/usr/bin:$PATH"
 
@@ -24,7 +26,10 @@ else
 fi
 
 for CALFILE in $CALFILES; do
-  if [ -e $CALFILE ]; then
+  if [ "$1" = "new" ]; then
+      echo "New calibration, removing old file"
+      rm $CALFILE 2>/dev/null || true
+  elif [ -e $CALFILE ]; then
     if grep replace $CALFILE ; then
       echo "Empty calibration file found, removing it"
       rm $CALFILE 2>/dev/null || true
